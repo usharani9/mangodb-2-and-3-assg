@@ -1,0 +1,29 @@
+Atlanta Population :
+
+	db.zipcodes.find({city:'ATLANTA',state:'GA'})
+
+	`db.zipcodes.aggregate([{$match:{city:'ATLANTA',state:'GA'}}])
+
+	db.zipcodes.aggregate([{$match:{city:"ATLANTA"}},{$count:"pop"}])
+{ pop: 41 }
+
+	db.zipcodes.aggregate([{$match:{city:"ATLANTA"}},{$group:{_id:{city:"ATLANTA"},count:{$sum:"$pop"}}}])
+
+Population By State:
+
+	db.zipcodes.aggregate([{$group:{_id:"$state",total:{$sum:"$pop"}}}])
+
+	db.zipcodes.aggregate([{$group:{_id:"$state",total:{$sum:"$pop"}}},{$sort:{total:-1}}])
+
+	db.zipcodes.aggregate([{$group:{_id:{city:"$city",state:"$state"},total:{$sum:"$pop"}}}])
+
+Population By City
+
+	db.zipcodes.aggregate([{$group:{_id:{city:"$city",state:"$state"},total:{$sum:"$pop"}}},{$sort:{total:-1}}])
+
+	db.zipcodes.aggregate([{$group:{_id:{city:"$city",state:"$state"},total:{$sum:"$pop"}}},{$sort:{total:-1}},{$limit:3}])
+	db.zipcodes.aggregate([{$group:{_id:{city:"$city",state:"Texas"},total:{$sum:"$pop"}}},{$sort:{total:-1}},{$limit:3}])
+
+	db.zipcodes.aggregate([{$group:{_id:"$state",total:{$avg:"$pop"}}}])
+
+	db.zipcodes.aggregate([{$group:{_id:"$state",total:{$avg:"$pop"}}},{$sort:{total:-1}},{$limit:3}])
